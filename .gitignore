@@ -35,6 +35,8 @@ _mineru_test/
 !/README.md
 # 完整使用说明（正式文档，必须入库）
 !/docs/USAGE.md
+# dsh 插件的发布 / 收录说明（正式文档，必须入库）
+!/docs/DSH-PLUGIN.md
 *.assets/
 
 # ---- Python ----------------------------------------------------------------
@@ -84,6 +86,14 @@ _shot_out/
 Thumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+
+# ---- dsh 插件（npm 包：dsh-doc2md）-----------------------------------------
+# 插件本体是仓库根下的这几个文件，必须入库：package.json / index.js /
+# cordis.patch.yml / screenshots.json。这里只挡装出来的依赖与锁文件。
+node_modules/
+package-lock.json
+npm-debug.log*
+*.tgz
 
 # ---- vendored 子项目（vendor/）---------------------------------------------
 # vendor 下是**原样引入的上游仓库**，文件必须一个不少 —— 少了就没法跟上游对齐、

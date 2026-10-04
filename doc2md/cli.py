@@ -152,6 +152,24 @@ def _print_summary(rep, elapsed: float) -> None:
     print("=" * 74)
 
 
+def _print_output_list(rep) -> None:
+    """打印「源文件 → md」清单（`--print-outputs`）。
+
+    格式刻意做成机器可读：每条以 ``[out] `` 开头，源与目标之间用**制表符**分隔，
+    这样路径里的空格、中文、括号都不会把一行拆错。上层工具（例如 dsh 插件
+    dsh-doc2md）就照这个格式解析，所以格式不要随手改。
+    """
+    print("\n" + "-" * 74)
+    print(f"  产出清单 {len(rep.outputs)} 条（[out] 源文件<TAB>md，供脚本解析）")
+    print("-" * 74)
+    if rep.outputs:
+        for src, md in rep.outputs:
+            print(f"[out] {src}\t{md}")
+    else:
+        print("[out] (none)\t# 本轮没有产出新的 md（可能全部幂等跳过或失败）")
+    print("-" * 74)
+
+
 def cmd_run(args, cfg: Config) -> int:
     if args.no_ocr:
         cfg.ocr.enabled = False
@@ -171,6 +189,8 @@ def cmd_run(args, cfg: Config) -> int:
     rep = eng.run(dry_run=False, limit=args.limit)
     store.close()
     _print_summary(rep, time.time() - t0)
+    if getattr(args, "print_outputs", False):
+        _print_output_list(rep)
     return 0 if rep.failed == 0 else 1
 
 
@@ -319,6 +339,8 @@ def cmd_convert(args, cfg: Config) -> int:
         print("\n[提示] --dry-run 只做分流预览，未写入任何文件。去掉该参数即可真正转换。")
         return 0
     _print_summary(rep, time.time() - t0)
+    if getattr(args, "print_outputs", False):
+        _print_output_list(rep)
     return 0 if rep.failed == 0 else 1
 
 
@@ -582,6 +604,9 @@ def build_parser() -> argparse.ArgumentParser:
     r.add_argument("--redo-engine", metavar="引擎", default=argparse.SUPPRESS,
                    help="先清掉状态库里该引擎的记录再跑（换引擎后重转用），"
                         "如 pdf-text / docx / xlsx")
+    r.add_argument("--print-outputs", action="store_true",
+                   help="转换结束后另打印一份「源文件 → md」清单"
+                        "（每条以 [out] 开头，制表符分隔，供脚本 / 上层工具解析）")
     c = add("convert", "只转换指定的文件（命令行给路径，或用 --list/-l 给清单文件）")
     c.add_argument("paths", nargs="*", metavar="路径",
                    help="要转换的文件或目录，可给多个；目录会按配置的扩展名递归展开")
@@ -592,6 +617,9 @@ def build_parser() -> argparse.ArgumentParser:
                    help="只解析清单并预览分流与 OCR 量，不写任何文件")
     c.add_argument("--force", action="store_true",
                    help="忽略状态库强制重转清单内的文件（已产出的 md 会被覆盖）")
+    c.add_argument("--print-outputs", action="store_true",
+                   help="转换结束后另打印一份「源文件 → md」清单"
+                        "（每条以 [out] 开头，制表符分隔，供脚本 / 上层工具解析）")
     w = add("watch", "实时监控目录并自动转换")
     w.add_argument("--no-catch-up", action="store_true", help="启动时不先做全量扫描")
     t = add("test", "转换单个文件")

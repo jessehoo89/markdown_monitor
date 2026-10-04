@@ -93,6 +93,10 @@ class Report:
     # 剩下的才是有信息量的（空文档、已加密、OCR 未启用…）。
     skipped_by_reason: Counter = field(default_factory=Counter)
     errors: list[tuple[str, str]] = field(default_factory=list)
+    # 「源文件 → 产出的 md」清单，供 --print-outputs 输出给脚本 / 上层工具。
+    # 自定义输出模式下，输出路径只有引擎自己算得出来（见 md_path_for），
+    # 所以这里顺手记一份，免得调用方去猜。
+    outputs: list[tuple[str, str]] = field(default_factory=list)
     started: float = field(default_factory=time.time)
     lock: threading.Lock = field(default_factory=threading.Lock)
 
@@ -116,6 +120,11 @@ class Report:
     def add_error(self, path: str, err: str) -> None:
         with self.lock:
             self.errors.append((path, err[:200]))
+
+    def add_output(self, src: str, md: str) -> None:
+        """记一条「源文件 → md」。只记真正产出的（ok），跳过/失败的不算。"""
+        with self.lock:
+            self.outputs.append((src, md))
 
     @property
     def elapsed(self) -> float:
@@ -785,6 +794,12 @@ class Engine:
             if status == "ok":
                 self.report.ok += 1
                 self.report.add_engine(info.split("(")[0])
+                # 产出路径在这里复算一次即可：写文件时已定好归属（见 md_path_for），
+                # 重算结果一致，不用把 (src, md) 一路往下传。
+                try:
+                    self.report.add_output(str(t.src), str(self.md_path_for(t.src)))
+                except Exception:
+                    pass
             elif status == "skip":
                 self.report.skipped += 1
                 self.report.add_skip(info)

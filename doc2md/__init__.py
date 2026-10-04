@@ -7,5 +7,5 @@
 from .config import Config, load_config
 from .state import StateStore
 
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 __all__ = ["Config", "load_config", "StateStore", "__version__"]

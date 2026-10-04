@@ -167,6 +167,66 @@ doc2md --help                     # 全部子命令与参数
 `--no-ocr`，写在子命令前后都认。Windows 上把 `doc2md` 换成 `doc2md.exe`；源码
 运行时是 `python -m doc2md`。
 
+## 作为 DeepSeek Harness 插件使用（npm 包 `dsh-doc2md`）
+
+仓库根下同时就是一个 npm 包 **`dsh-doc2md`**：给
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（`dsh`）注册一个
+`doc2md` 工具，让 agent 能把文档直接转成 Markdown。插件本身**不含任何文档解析器**，
+只是对本机已安装的 doc2md CLI 的一层确定性桥接。
+
+```sh
+# 从 npm 装（推荐；预构建安装免 allowBuilds 构建授权）
+dsh plugin --profile web add dsh-doc2md
+
+# 或直接从 GitHub 装（不需要 npm 账号）
+dsh plugin --profile web add github:jessehoo89/markdown_monitor
+```
+
+装完重启该 profile 即可。工具提供四个动作：
+
+| action | 作用 |
+|---|---|
+| `convert` | 转换给定的绝对路径（文件 / 目录），并报出每个「源文件 → md」的准确落点 |
+| `read` | 读回某个 `.md`（或源文档旁边的同名 md）的正文 |
+| `scan` | 试运行：只列分流与 OCR 量，不写任何文件 |
+| `status` | 打印转换统计（含各后端今日用量） |
+
+**前置条件**：本机要有可用的 doc2md。插件按下面的顺序找它，命中哪个用哪个 ——
+也可以在插件加载前设好对应环境变量来指定：
+
+| 环境变量 | 含义 |
+|---|---|
+| `DOC2MD_BIN` | `doc2md` / `doc2md.exe` 的绝对路径（优先级最高） |
+| `DOC2MD_REPO` | 源码仓库根目录，改用 `<python> -m doc2md` 调用 |
+| `DOC2MD_PYTHON` | `DOC2MD_REPO` 用哪个解释器（默认依次找 `python3` / `python` / `py`） |
+
+都没有时再去 PATH 与常见安装目录（`%LOCALAPPDATA%\Programs\doc2md`、`C:\Program Files\doc2md`、
+`~/.local/bin`、`/opt/doc2md`）里找。要求 Node ≥ 22.19。
+
+**它碰什么、不碰什么**（评审会逐条对着代码核，这里先写清楚）：
+
+- 只读写你点名给它的路径；不解析文档、不抓网页、不 `eval`、不加载远程资源。
+- 文档由本机的 doc2md 进程解析。**扫描件是否上传云端 OCR，取决于 doc2md 自己的
+  `config.json` / `.env` 配置**，与这个插件无关 —— 插件不会替它做这个决定。
+- 工具参数会进入会话日志，别把含密钥的路径当成秘密。
+- 唯一的外部依赖是 harness 自带的 `@deepseek-ai/dsh-tools`（peer dependency），运行时零依赖。
+
+**版本提示**：`convert` 用 `doc2md convert --print-outputs` 拿到**准确**的产出路径
+（该开关自 doc2md **1.0.3** 起提供）。装在更老的版本上会自动降级为「按源文件同目录同名推断」，
+并在结果里注明这一降级 —— 那时只有 `output.mode=alongside` 才准。另外，打包版
+`doc2md.exe` 无论怎么设 `PYTHONIOENCODING` 都按 GBK 输出，插件两种编码都能解，不会乱码。
+
+发布到 npm、以及向 [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)
+申请收录的完整步骤，见 **[docs/DSH-PLUGIN.md](docs/DSH-PLUGIN.md)**。
+
+English: the repo root doubles as the npm package **`dsh-doc2md`**, a DeepSeek Harness (`dsh`)
+plugin that registers a `doc2md` tool with four actions (`convert` / `read` / `scan` / `status`).
+It ships no parser of its own — it is a deterministic bridge to a locally installed doc2md CLI,
+locatable via `DOC2MD_BIN` / `DOC2MD_REPO` / `DOC2MD_PYTHON` or, failing that, PATH and the common
+install directories. It reads and writes only the paths it is given, never uses the network itself,
+and never decides on your behalf whether scanned pages go to a cloud OCR backend — that is doc2md's
+own configuration. Install with `dsh plugin --profile web add dsh-doc2md`.
+
 ## 文档
 
 - **[详细使用说明](docs/USAGE.md)** —— 命令行全参数、图形界面、配置字段逐项说明、
