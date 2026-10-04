@@ -175,14 +175,16 @@ doc2md --help                     # 全部子命令与参数
 只是对本机已安装的 doc2md CLI 的一层确定性桥接。
 
 ```sh
-# 从 npm 装（推荐；预构建安装免 allowBuilds 构建授权）
-dsh plugin --profile web add dsh-doc2md
-
-# 或直接从 GitHub 装（不需要 npm 账号）
+# 从 GitHub 装（不需要 npm 账号，也不需要等待发布）
 dsh plugin --profile web add github:jessehoo89/markdown_monitor
+
+# 或在 DSH 桌面端的市场里点「手动输入」，填 github:jessehoo89/markdown_monitor
 ```
 
-装完重启该 profile 即可。工具提供四个动作：
+装完重启该 profile 即可。插件没有 build 脚本，所以不会触发 `allowBuilds` 构建授权。
+若机器上没有 pnpm（`dsh plugin` 依赖它），先 `corepack enable pnpm` 即可。
+
+工具提供四个动作：
 
 | action | 作用 |
 |---|---|
@@ -225,7 +227,8 @@ It ships no parser of its own — it is a deterministic bridge to a locally inst
 locatable via `DOC2MD_BIN` / `DOC2MD_REPO` / `DOC2MD_PYTHON` or, failing that, PATH and the common
 install directories. It reads and writes only the paths it is given, never uses the network itself,
 and never decides on your behalf whether scanned pages go to a cloud OCR backend — that is doc2md's
-own configuration. Install with `dsh plugin --profile web add dsh-doc2md`.
+own configuration. Install with `dsh plugin --profile web add github:jessehoo89/markdown_monitor`
+(no npm account needed), or pick "manual input" in the DSH desktop market.
 
 ## 文档
 

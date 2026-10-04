@@ -29,10 +29,51 @@ git push
 
 ---
 
-## 二、发布到 npm
+## 一·五、从 GitHub 直接安装（不发 npm 的主路径）
 
-npm 包不是收录的必要条件（不发也能从 GitHub 装），但**发了市场能显示下载量、并跳过
-构建授权**，所以建议发。
+npm 包**不是收录的必要条件**，也不是安装的必要条件 —— 插件可以从 GitHub 直接装，
+行为与从 npm 装完全一致。本插件没有 build 脚本，所以还省掉了 `allowBuilds` 构建授权。
+
+### 方式 A：DSH 桌面端的市场（推荐）
+
+市场（`dshmarket`）的搜索框旁有**「手动输入」**，接受这些写法：
+
+```
+github:jessehoo89/markdown_monitor          # 推荐
+github:jessehoo89/markdown_monitor#<sha>    # 钉住某个提交，最稳
+jessehoo89/markdown_monitor                 # 简写
+```
+
+装之前市场会自动创建快照，随时可回滚。国内网络不用额外配代理：市场对中国区默认走
+`gh-proxy.com`，失败会自动回退直连（也可在设置里换成自己的线路）。
+
+> 收录条目**合并之后**，插件才会出现在市场的搜索列表里（市场目录来自
+> `awesome-dsh-plugin.com/plugins.json`）。合并前用上面的「手动输入」装。
+
+### 方式 B：命令行
+
+```bash
+dsh plugin add github:jessehoo89/markdown_monitor --profile <你的 profile 名>
+```
+
+`--profile` 是必填的（省略会直接报错）。`dsh plugin` 内部调用 pnpm，所以机器上得先有
+pnpm —— 没装的话用 corepack 顶一下即可：`corepack enable pnpm`。
+
+### 装完怎么确认
+
+```bash
+dsh plugin list --profile desktop      # 应出现 dsh-doc2md
+```
+
+在会话里让模型调用 `doc2md` 工具、`action: "status"`，能返回转换统计就说明接通了。
+插件按 `DOC2MD_BIN` → `DOC2MD_REPO` → PATH → 常见安装目录的顺序找本机 doc2md。
+
+---
+
+## 二、发布到 npm（可选）
+
+npm 包不是收录的必要条件（不发也能从 GitHub 装），发了的收益只有两个：市场能显示下载量、
+安装免构建授权（本插件无 build 脚本，这一条也用不上）。**发不发都不影响收录。**
 
 ```bash
 npm login                     # 只需一次
