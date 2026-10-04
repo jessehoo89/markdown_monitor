@@ -1,5 +1,5 @@
 # -*- mode: python ; coding: utf-8 -*-
-"""PyInstaller 打包配置 —— doc2md（文档批量转 Markdown）。
+"""PyInstaller 打包配置 —— markdown_monitor（命令行/exe 名仍是 doc2md）。
 
 用法（在项目根，用**带 tkinter 的那个解释器**）：
     Windows:  .venv-gui\Scripts\python.exe -m PyInstaller doc2md.spec --noconfirm

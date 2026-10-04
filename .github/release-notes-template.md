@@ -1,4 +1,4 @@
-doc2md：把文档批量转成 Markdown 的命令行工具。
+markdown_monitor（命令行仍是 `doc2md`）：实时监控目录，把新增或改动的文档自动转成 Markdown。
 
 支持 `.docx` / `.xlsx` / `.doc` / `.xls` / `.pdf`（含扫描件 OCR）批量转换，可递归整个目录。
 

@@ -50,7 +50,7 @@ import threading
 from pathlib import Path
 
 APP_NAME = "doc2md"
-APP_TITLE = "doc2md · 文档批量转 Markdown"
+APP_TITLE = "markdown_monitor · 实时监控转 Markdown"
 # 版本号单一来源：doc2md/__init__.py（spec 的 pathex 是仓库根，打包时会带上该包）
 try:
     from doc2md import __version__ as APP_VERSION

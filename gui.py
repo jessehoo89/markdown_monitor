@@ -70,7 +70,7 @@ from doc2md.state import StateStore   # noqa: E402
 from doc2md.stdio import make_stdio_safe   # noqa: E402
 from doc2md import __version__   # noqa: E402
 
-APP_TITLE = "文档批量转 Markdown"
+APP_TITLE = "markdown_monitor · 文档监控转 Markdown"
 APP_VERSION = __version__   # 版本号单一来源：doc2md/__init__.py
 LOG_MAX_LINES = 5000                  # 日志面板上限，超出丢弃最旧的（长批量不至于吃满内存）
 
@@ -987,7 +987,7 @@ class Doc2MdApp:
 
     def _banner(self, cfg: Config, mode: str) -> None:
         self.log("=" * 74)
-        self.log(f"  文档批量转 Markdown  ·  {mode}")
+        self.log(f"  markdown_monitor · 文档监控转 Markdown  ·  {mode}")
         self.log("=" * 74)
         self.log(f"  处理目录 : {', '.join(cfg.roots)}")
         self.log(f"  转换格式 : {', '.join(cfg.watch_extensions)}")

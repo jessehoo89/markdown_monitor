@@ -74,7 +74,7 @@ def _install_thread_guard() -> None:
 
 def _banner(cfg: Config, mode: str, roots_text: str | None = None) -> None:
     print("=" * 74)
-    print(f"  文档批量转 Markdown  ·  {mode}")
+    print(f"  markdown_monitor · 文档监控转 Markdown  ·  {mode}")
     print("=" * 74)
     print(f"  处理目录 : {roots_text if roots_text is not None else ', '.join(cfg.roots)}")
     print(f"  转换格式 : {', '.join(cfg.watch_extensions)}")
@@ -564,7 +564,7 @@ def _add_common(p: argparse.ArgumentParser, suppress: bool) -> None:
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="doc2md",
-        description="文档批量转 Markdown（docx/doc/xls/xlsx/pdf → md，支持 OCR 与实时监控）",
+        description="实时监控目录并转 Markdown（docx/doc/xls/xlsx/pdf → md，支持 OCR；项目名 markdown_monitor）",
     )
     _add_common(p, suppress=False)
     p.add_argument("--version", action="version", version=f"doc2md {__version__}")

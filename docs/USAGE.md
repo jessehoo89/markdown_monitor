@@ -1,4 +1,6 @@
-# doc2md 使用说明
+# markdown_monitor 使用说明
+
+> 项目与仓库名是 markdown_monitor；**命令行、可执行文件、安装目录名仍沿用 `doc2md`**。
 
 [README](../README.md) 只保留项目介绍、安装方法、支持平台和常用命令；这里是完整版：
 安装细节、每条命令的参数、图形界面、配置字段、云端 OCR 链路、目录结构、打包与安装包、
@@ -43,15 +45,15 @@ copy .env.example .env
 一条命令（不用先下仓库，推荐）：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/jessehoo89/markdown_monitor/main/install.sh | bash
 # 用 wget 也行
-wget -qO- https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh | bash
+wget -qO- https://raw.githubusercontent.com/jessehoo89/markdown_monitor/main/install.sh | bash
 ```
 
 给脚本传参数要加 `-s --`：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh \
+curl -fsSL https://raw.githubusercontent.com/jessehoo89/markdown_monitor/main/install.sh \
   | bash -s -- --prefix /opt/doc2md
 ```
 
@@ -59,14 +61,14 @@ curl -fsSL https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh \
 一起走这条通道（`gh-proxy.com` / `ghproxy.net` / `ghfast.top` 都可用，实测）：
 
 ```bash
-curl -fsSL https://gh-proxy.com/https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh \
+curl -fsSL https://gh-proxy.com/https://raw.githubusercontent.com/jessehoo89/markdown_monitor/main/install.sh \
   | bash -s -- --gh-proxy https://gh-proxy.com/
 ```
 
 已经手动下好 Release 里的程序时，跳过下载直接装：
 
 ```bash
-curl -fsSL https://gh-proxy.com/https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh \
+curl -fsSL https://gh-proxy.com/https://raw.githubusercontent.com/jessehoo89/markdown_monitor/main/install.sh \
   | bash -s -- --bin ~/下载/doc2md-v1.0.2-linux-x86_64
 ```
 

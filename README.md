@@ -1,4 +1,26 @@
-# doc2md · 文档批量转 Markdown
+# markdown_monitor
+
+**实时监控目录，把新增或改动的文档自动转成 Markdown。**
+
+往监控目录里丢 `.docx` / `.doc` / `.xlsx` / `.xls` / `.pdf` / 图片，程序检测到写入完成就自动
+转换，产出同名 `.md`，不必手动敲命令。想一次性批量转整棵目录树，仍用 `doc2md convert <目录>`。
+
+> 项目与仓库名是 **markdown_monitor**；**命令行、可执行文件、安装目录名仍沿用 `doc2md`**，
+> 已经装过的实例与脚本不受影响。
+
+## 监控模式
+
+- **随放随转**：`watchdog` 监听多个根目录的新增与修改，带**写入防抖**（大文件拷到一半不会被
+  误转）与**自触发保护**（自己生成的 `.md` 不会再次触发转换）
+- **不重复转换**：`state.db` 记录已处理文件与结果，重启、重扫、重复投放都不会重转
+- **配置热加载**：改 `config.json` 立即生效（监控目录、排除目录、扩展名、防抖时长、输出位置、
+  PDF 引擎…），只有 OCR 相关改动需要重启
+- **多根目录 + 排除规则**：`roots` 可配多个监控目录；`exclude_dir_names` 排除目录、
+  `sensitive_markers` 标记敏感文件不上云
+- **三种跑法**：图形界面带监控面板；命令行 `doc2md watch`；Windows 上双击
+  `文档转MD-监控模式.bat`
+
+## 转换能力
 
 把一整个目录树的 **docx / doc / xls / xlsx / pdf** 批量转成 Markdown，并带上
 **断点续传**、**实时监控**、**扫描件 OCR（多云端后端自动熔断切换）** 三件事。
@@ -52,7 +74,7 @@ docx / xlsx / 有文字层的 PDF）；③ 跑一次 `doc2md scan` 试运行 —
 ### Windows
 
 #### 方式一：**单文件安装程序**
-release页面[https://github.com/jessehoo89/doc2md/releases]
+release页面[https://github.com/jessehoo89/markdown_monitor/releases]
 下载doc2md-*-win-x64-installer.exe
 双击安装至指定目录，运行doc2md.exe及doc2md-gui.exe
 或下载 *.-win-x64.zip 解压后运行 doc2md-gui.exe
@@ -82,7 +104,7 @@ copy config.example.json config.json
 #### 一条命令装完（推荐；自动取 Release 里的现成程序，不需要 Python）：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/jessehoo89/markdown_monitor/main/install.sh | bash
 ```
 
 默认装到 `~/.local`,程序约 130M。可用的参数：`--version v1.0.2`

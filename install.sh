@@ -2,7 +2,7 @@
 # doc2md 一键安装（Linux / macOS）
 #
 #   一条命令（不用先下仓库）：
-#   curl -fsSL https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/jessehoo89/markdown_monitor/main/install.sh | bash
 #
 #   仓库内：
 #   bash install.sh                    # 默认装到 ~/.local（有单文件二进制就用它，秒装）
@@ -34,7 +34,7 @@ DO_UNINSTALL=0
 ASSUME_YES=0
 VERSION="${DOC2MD_VERSION:-}"
 GH_PROXY="${DOC2MD_GH_PROXY:-}"
-REPO="${DOC2MD_REPO:-https://github.com/jessehoo89/doc2md}"
+REPO="${DOC2MD_REPO:-https://github.com/jessehoo89/markdown_monitor}"
 SRC_DIR="${DOC2MD_SRC_DIR:-}"
 STAGE_DIR=""
 
@@ -46,7 +46,7 @@ usage() {
 doc2md 一键安装（Linux / macOS）
 
   一条命令（不用先下仓库）：
-  curl -fsSL https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh | bash
+  curl -fsSL https://raw.githubusercontent.com/jessehoo89/markdown_monitor/main/install.sh | bash
 
   常用参数：
   --prefix DIR      装到哪（默认 ~/.local）

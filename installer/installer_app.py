@@ -49,7 +49,7 @@ import zipfile
 from pathlib import Path
 
 APP_NAME = "doc2md"
-APP_TITLE = "doc2md · 文档批量转 Markdown"
+APP_TITLE = "markdown_monitor · 实时监控转 Markdown"
 # 版本号单一来源：doc2md/__init__.py 的 __version__（两个 spec 的 pathex 都是仓库根，
 # 打包时会把轻量的 doc2md 包一起带上，冻结后照样读得到；不再各自硬编码）
 try:
@@ -416,7 +416,7 @@ def write_registry(dest: Path) -> bool:
             def setv(name, value, typ=winreg.REG_SZ):
                 winreg.SetValueEx(k, name, 0, typ, value)
 
-            setv("DisplayName", f"{APP_NAME} 文档批量转 Markdown")
+            setv("DisplayName", f"{APP_NAME} 文档监控转 Markdown")
             setv("DisplayVersion", APP_VERSION)
             setv("Publisher", PUBLISHER)
             setv("InstallLocation", str(dest))
