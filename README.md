@@ -51,20 +51,22 @@ docx / xlsx / 有文字层的 PDF）；③ 跑一次 `doc2md scan` 试运行 —
 
 ### Windows
 
-方式一：**单文件安装程序**（目标机不用装 Python；Release 里只有 Linux 包，Windows
-装包在本机跑一次 `打包安装包.bat` 生成，见 [使用说明](docs/USAGE.md#安装版单文件安装程序)）
-
+## 方式一：**单文件安装程序**
+release页面[https://github.com/jessehoo89/doc2md/releases]
+下载doc2md-*-win-x64-installer.exe
+双击安装至指定目录，运行doc2md.exe及doc2md-gui.exe
+或下载 *.-win-x64.zip 解压后运行 doc2md-gui.exe
 ```bat
-doc2md-安装程序.exe                  :: 双击：图形界面，选目录、建快捷方式
-doc2md-安装程序.exe /S               :: 静默装到 C:\Program Files\doc2md
-doc2md-安装程序.exe /S /D=D:\doc2md  :: 静默装到指定目录
+doc2md-*-win-x64-installer.exe                  :: 双击：图形界面，选目录、建快捷方式
+doc2md-*-win-x64-installer.exe /S               :: 静默装到 C:\Program Files\doc2md
+doc2md-*-win-x64-installer.exe /S /D=D:\doc2md  :: 静默装到指定目录
 ```
 
 装完安装目录里有 `doc2md.exe`（命令行 / 中文菜单）与 `doc2md-gui.exe`（图形界面），
 卸载用它自带的 `uninstall.exe`。构建与更多参数见
 [使用说明 → 安装版](docs/USAGE.md#安装版单文件安装程序)。
 
-方式二：**源码 + 虚拟环境**（开发用）
+## 方式二：**源码 + 虚拟环境**（开发用）
 
 ```bat
 python -m venv .venv
@@ -77,45 +79,18 @@ copy config.example.json config.json
 
 ### Linux / macOS
 
-一条命令装完（推荐；自动取 Release 里的现成程序，不需要 Python）：
+## 一条命令装完（推荐；自动取 Release 里的现成程序，不需要 Python）：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh | bash
 ```
 
-用 `wget` 也行；要传参数就在后面加 `-s --`：
-
-```bash
-wget -qO- https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh | bash
-curl -fsSL https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh \
-  | bash -s -- --prefix /opt/doc2md
-```
-
-默认装到 `~/.local`，装完就有 `doc2md` 命令。程序约 130MB，下完会按 Release 的
-`SHA256SUMS-linux.txt` 校验，对不上会直接停下。可用的参数：`--version v1.0.2`
+默认装到 `~/.local`,程序约 130M。可用的参数：`--version v1.0.2`
 （默认最新版）、`--gh-proxy https://gh-proxy.com/`（GitHub 慢时套加速）、
 `--bin 文件`（用你已下好的 Release 程序）、`--source`（改成 git clone 源码安装）、
 `--uninstall`。全部参数与环境变量见[使用说明](docs/USAGE.md#linux--macos一条命令--一键脚本--源码)。
 
-现成程序按 glibc 2.36 链接（在 Debian 12 上打包），Debian 12 / Ubuntu 23.04 及更新的系统
-直接可用；更旧的系统会报 `GLIBC_2.xx not found`，脚本遇到会**自动改用源码安装**重来一遍
-（需要 git 与 Python 3.11+），也可以自己加 `--source`。
-
-国内直连 GitHub 常常很慢甚至卡死（脚本自己取程序那段也一样）。这时套个加速前缀，
-取脚本和后面下程序都走这条通道：
-
-```bash
-curl -fsSL https://gh-proxy.com/https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh \
-  | bash -s -- --gh-proxy https://gh-proxy.com/
-```
-
-已经手动下好 Release 里的程序时，可以跳过下载：
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/jessehoo89/doc2md/main/install.sh \
-  | bash -s -- --bin ~/下载/doc2md-v1.0.2-linux-x86_64
-```
-
+## 手动安装
 仓库已经克隆到本地时，也可以就地跑脚本：
 
 ```bash
@@ -132,7 +107,7 @@ bash install.sh --uninstall     # 卸载
 源码方式。程序把自己的 `config.json` / `.env` / `state.db` 写在安装目录的
 `share/doc2md/` 里，跟着程序走，不依赖当前工作目录。
 
-源码 + 虚拟环境：
+# 源码 + 虚拟环境：
 
 ```bash
 python3 -m venv .venv
@@ -141,7 +116,7 @@ cp config.example.json config.json
 .venv/bin/python -m doc2md scan
 ```
 
-方式三：**打成单个可执行文件分发**（目标机不装 Python）
+# 打成单个可执行文件分发（目标机不装 Python）
 
 ```bash
 bash build_linux.sh onefile     # 产物：dist-onefile/doc2md —— 一个文件拷走即用
